@@ -9,7 +9,6 @@ var express         = require('express'),
   morgan            = require('morgan'),
   http              = require('http'),
   path              = require('path'),
-  mongo             = require('mongodb'),
   fs                = require('fs');
 
 var app = module.exports = express();
@@ -18,9 +17,7 @@ var app = module.exports = express();
 var apiConfig = JSON.parse(fs.readFileSync('./ApiConfig.json', 'utf8'));
 
 // Mongo DB setup
-var mongo           = require('mongodb');
-var monk            = require('monk');
-var db              = monk(apiConfig.database_url);
+var MongoClient = require('mongodb').MongoClient;
 
 /**
  * Configuration
@@ -52,13 +49,17 @@ if (env === 'production') {
  */
 // Database route connection
 app.use(function(req, res, next) {
-    req.db = db;
-    next();
+    MongoClient.connect(apiConfig.database_url, function (err, db) {
+        if(err) throw err;
+
+        req.db = db;
+        next();
+    });
 });
 
 // API routes
 app.use('/api/post', require('./routes/BlogPostApi'));
-// more routes here ...
+// more api routes here ...
 
 /**
  * Start Server

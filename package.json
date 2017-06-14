@@ -8,8 +8,7 @@
     "express": "~4.1.1",
     "express-error-handler": "^1.1.0",
     "method-override": "^1.0.0",
-    "mongodb": "^2.2.27",
-    "monk": "^5.0.2",
+    "mongodb": "^2.2.28",
     "morgan": "^1.0.0"
   },
   "devDependencies": {},
