@@ -23,7 +23,7 @@ var MongoClient = require('mongodb').MongoClient;
  * Configuration
  */
 // All environments
-app.set('port', process.env.PORT || 3030);
+app.set('port', process.env.PORT || 3001);
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
   extended: true
