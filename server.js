@@ -23,7 +23,7 @@ var MongoClient = require('mongodb').MongoClient;
  * Configuration
  */
 // All environments
-app.set('port', process.env.PORT || 3030);
+app.set('port', process.env.PORT || 3001);
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
   extended: true
@@ -58,7 +58,7 @@ app.use(function(req, res, next) {
 });
 
 // API routes
-app.use('/api/post', require('./routes/BlogPostApi'));
+app.use('/api/generic', require('./routes/restapi-routes'));
 // more api routes here ...
 
 /**

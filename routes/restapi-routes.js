@@ -1,19 +1,15 @@
-/*
- * API to mongo connection
- */
 var express = require("express");
 var router = express.Router();
 var ObjectId = require('mongodb').ObjectID;
 
 /*
- * Blog Post API
- * Operations for 'post' records
+ * Generic REST API
  */
-/* GET all posts */
-router.get("/", function(req, res) {
+/* GET all */
+router.get("/:col", function(req, res) {
     var db = req.db;
 
-    db.collection('post', function(err, collection) {
+    db.collection(req.params.col, function(err, collection) {
         collection.find().toArray(
         function(err, data) {
             if (err) throw err;
@@ -24,12 +20,12 @@ router.get("/", function(req, res) {
     });
 });
 
-/* GET single post by _id */
-router.get("/:id", function(req, res) {
+/* GET */
+router.get("/:col/:id", function(req, res) {
     var db = req.db;
     var postId = req.params.id;
 
-    db.collection('post', function(err, collection) {
+    db.collection(req.params.col, function(err, collection) {
 
         collection.findOne({"_id": new ObjectId(postId)},
         function(err, data) {
@@ -41,12 +37,12 @@ router.get("/:id", function(req, res) {
     });
 });
 
-/* POST a new post */
-router.post("/", function(req, res) {
+/* POST */
+router.post("/:col", function(req, res) {
     var db = req.db;
     var reqData = req.body;
 
-    db.collection('post', function(err, collection) {
+    db.collection(req.params.col, function(err, collection) {
         collection.insert(reqData,
         function(er, data) {
             setHeaders(res);
@@ -55,8 +51,8 @@ router.post("/", function(req, res) {
     });
 });
 
-/* PUT/UPDATE a post */
-router.put("/:id", function(req, res) {
+/* PUT/UPDATE */
+router.put("/:col/:id", function(req, res) {
     var db = req.db;
     var postId = req.params.id;
     var reqData = req.body;
@@ -66,7 +62,7 @@ router.put("/:id", function(req, res) {
         delete reqData["_id"];
     }
 
-    db.collection('post', function(err, collection) {
+    db.collection(req.params.col, function(err, collection) {
         collection.update({"_id": new ObjectId(postId)}, reqData,
         function(er, data) {
             setHeaders(res);
@@ -75,12 +71,12 @@ router.put("/:id", function(req, res) {
     });
 });
 
-/* DELETE a post */
-router.delete("/:id", function(req, res) {
+/* DELETE */
+router.delete("/:col/:id", function(req, res) {
     var db = req.db;
     var postId = req.params.id;
 
-    db.collection('post', function(err, collection) {
+    db.collection(req.params.col, function(err, collection) {
         collection.remove({"_id": new ObjectId(postId)},
         function(er, data) {
             setHeaders(res);
